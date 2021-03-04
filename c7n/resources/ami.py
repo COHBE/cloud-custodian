@@ -14,8 +14,7 @@ from c7n.manager import resources
 from c7n.query import QueryResourceManager, DescribeSource, TypeInfo
 from c7n.resolver import ValuesFrom
 from c7n.utils import local_session, type_schema, chunks, merge_dict_list
-
-
+from c7n.utils import (reset_session_cache)
 log = logging.getLogger('custodian.ami')
 
 
@@ -296,7 +295,7 @@ class ImageUnusedFilter(Filter):
                     value: true
     """
 
-    schema = type_schema('unused', value={'type': 'boolean'})
+    schema = type_schema('unused', value={'type': 'boolean'}, accounts={'type': 'array', 'items': {'type': 'string'}})
 
     def get_permissions(self):
         return list(itertools.chain(*[
@@ -325,7 +324,14 @@ class ImageUnusedFilter(Filter):
         return {i['ImageId'] for i in ec2_manager.resources()}
 
     def process(self, resources, event=None):
-        images = self._pull_ec2_images().union(self._pull_asg_images())
+        original_assume= self.manager.ctx.session_factory.assume_role
+        images= set([])
+        for account in self.data.get('accounts', []):
+            reset_session_cache()
+            self.manager.ctx.session_factory.assume_role = account
+            images = images.union(self._pull_ec2_images().union(self._pull_asg_images()))
+        reset_session_cache()
+        self.manager.ctx.session_factory.assume_role = original_assume
         if self.data.get('value', True):
             return [r for r in resources if r['ImageId'] not in images]
         return [r for r in resources if r['ImageId'] in images]
