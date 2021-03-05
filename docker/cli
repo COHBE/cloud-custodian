@@ -39,7 +39,7 @@ RUN mkdir /output
 FROM ubuntu:20.04
 
 LABEL name="cli" \
-      repository="http://github.com/cloud-custodian/cloud-custodian"
+      repository="https://github.com/COHBE/cloud-custodian"
 
 COPY --from=build-env /src /src
 COPY --from=build-env /usr/local /usr/local
