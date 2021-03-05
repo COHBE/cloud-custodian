@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'ubuntu:20.04'
+            reuseNode true
+        }
+    }
     environment {
         IMAGE = "cloudcustodian/c7n"
         IMAGE_VERSION = "latest"
@@ -9,14 +14,9 @@ pipeline {
 
     stages {
         stage('build Image') {
-            agent {
-                docker {
-                    image 'ubuntu:20.04'
-                    reuseNode true
-                }
-            }
             steps {
                     script {
+                        sh " apt-get install docker-ce docker-ce-cli containerd.io"
                         dockerImage = docker.build("${IMAGE_TAG}")
                     }
             }
