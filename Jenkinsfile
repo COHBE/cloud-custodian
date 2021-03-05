@@ -1,14 +1,12 @@
 pipeline {
-    agent any
+    agent { dockerfile true }
     environment {
         IMAGE = "cloudcustodian/c7n"
         IMAGE_VERSION = "latest"
         IMAGE_TAG = "$IMAGE:$IMAGE_VERSION"
         NEXUS_URL = "nexus.internal.connectforhealthco.com:8082"
     }
-
     stages {
-        agent { dockerfile true }
         stage('build Image') {
 
             steps {
