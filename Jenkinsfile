@@ -9,10 +9,14 @@ pipeline {
 
     stages {
         stage('build Image') {
-
+            agent {
+                docker {
+                    image 'ubuntu:20.04'
+                    reuseNode true
+                }
+            }
             steps {
                     script {
-                        sh "docker pull ubuntu:20.04"
                         dockerImage = docker.build("${IMAGE_TAG}")
                     }
             }
