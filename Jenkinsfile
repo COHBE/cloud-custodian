@@ -17,11 +17,9 @@ pipeline {
         stage('build Image') {
 
             steps {
-                dir("${BUILD_DIR}") {
                     script {
                        dockerImage = docker.build("${IMAGE_TAG}  ${BUILD_ARGS}")
                     }
-                }
             }
         }
         stage('tag Image') {
