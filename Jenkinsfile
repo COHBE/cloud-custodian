@@ -8,11 +8,11 @@ pipeline {
     }
 
     stages {
+        agent { dockerfile true }
         stage('build Image') {
 
             steps {
                     script {
-                        docker.pull( ubuntu:20.04 )
                         dockerImage = docker.build("${IMAGE_TAG}")
                     }
             }
