@@ -1,16 +1,18 @@
 pipeline {
-    agent { dockerfile true }
+    agent any
     environment {
         IMAGE = "cloudcustodian/c7n"
         IMAGE_VERSION = "latest"
         IMAGE_TAG = "$IMAGE:$IMAGE_VERSION"
         NEXUS_URL = "nexus.internal.connectforhealthco.com:8082"
     }
+
     stages {
         stage('build Image') {
 
             steps {
                     script {
+                        sh "docker pull ubuntu:20.04"
                         dockerImage = docker.build("${IMAGE_TAG}")
                     }
             }
