@@ -8,17 +8,11 @@ pipeline {
     }
 
     stages {
-        stage('Set Build Information') {
-           steps {
-             buildName "${BUILD_NUMBER}"
-             buildDescription "tag: ${IMAGE_TAG}"
-           }
-        }
         stage('build Image') {
 
             steps {
                     script {
-                       dockerImage = docker.build("${IMAGE_TAG}  ${BUILD_ARGS}")
+                       dockerImage = docker.build("${IMAGE_TAG}")
                     }
             }
         }
