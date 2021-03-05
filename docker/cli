@@ -1,7 +1,5 @@
 # Dockerfiles are generated from tools/dev/dockerpkg.py
 
-FROM ubuntu:20.04 as build-env
-
 # pre-requisite distro deps, and build env setup
 RUN adduser --disabled-login --gecos "" custodian
 RUN apt-get --yes update
