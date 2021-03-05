@@ -1,3 +1,28 @@
+NOTE!!!
+=================
+This repository is forked from the current cloudcustodian repo.   
+#####To ugrade to a newer to the latest cloud-custodian   
+
+    checkout COHBE forked repo   
+    git remote add upstream https://github.com/COHBE/cloud-custodian.git
+    git remote -v (should show new link to above)
+    git fetch upstream
+    git merge upstream/master
+
+Then reapply these changes.
+##### To build the docker image
+run this command:  vox --> this will build any changes
+
+    docker build -t nexus.internal.connectforhealthco.com:8082/cloudcustodian/c7n .
+
+    run the nexus tunnel:
+        sudo ssh -L 8082:nexus.internal.connectforhealthco.com:8082 bastion
+    push the image to nexus 
+        docker push nexus.internal.connectforhealthco.com:8082/cloudcustodian/c7n
+
+Hopefully, they will someday update their product to support this natively.
+
+
 Cloud Custodian
 =================
 
